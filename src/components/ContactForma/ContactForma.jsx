@@ -15,15 +15,13 @@ const ContactForma = ({ submitBtn }) => {
     }
   };
 
-  // const reset = () => {
-  //   this.setState({ name: '', number: '' });
-  // };
-
   const onSubmit = e => {
     e.preventDefault();
 
     submitBtn(userName, number);
-    // this.reset();
+
+    setUserName('');
+    setNumber('');
   };
 
   return (

@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import ContactForma from './ContactForma/ContactForma';
 import ContactList from './ContactList/ContactList';
 import s from './App.module.css';
 import { nanoid } from 'nanoid';
 import Filter from './Filter/Filter';
-// import Filter from './Filter/Filter';
+
 let defaulContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
@@ -13,22 +13,32 @@ let defaulContacts = [
   { id: 'id-5', name: 'dima', number: '227-915-26' },
 ];
 
-export default function App() {
-  // const defCont = useRef(defaulContacts);
+const useLocalStorage = (key, defaultValue) => {
+  const [state, setState] = useState(() => {
+    return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
+  });
 
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+
+  return [state, setState];
+};
+
+export default function App() {
   const [filterName, setFilterName] = useState('');
-  const [contacts, setContacts] = useState(defaulContacts);
+  const [contacts, setContacts] = useLocalStorage('contacts', defaulContacts);
 
   const submitBtn = (name, number) => {
-    // const normalizedName = name.toLowerCase();
+    const normalizedName = name.toLowerCase();
 
-    // const checkedForName = contacts.find(
-    //   contact => normalizedName === contact.name.toLocaleLowerCase()
-    // );
+    const checkedForName = contacts.find(
+      contact => normalizedName === contact.name.toLocaleLowerCase()
+    );
 
-    // if (checkedForName) {
-    //   return alert(`${name} is already in contacts`);
-    // }
+    if (checkedForName) {
+      return alert(`${name} is already in contacts`);
+    }
 
     const newContact = {
       id: nanoid(),
@@ -36,19 +46,15 @@ export default function App() {
       number: number,
     };
 
-    // if (!name || !number) {
-    //   alert('Invalid name or number vaule!');
-    //   return;
-    // }
-    console.log(newContact);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    setContacts(() => contacts.push(newContact));
-    console.log(contacts);
-    // setContacts();
+    if (!name || !number) {
+      alert('Invalid name or number value!');
+      return;
+    }
+
+    setContacts([...contacts, newContact]);
   };
 
   const onSaveFind = e => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     setFilterName(e.currentTarget.value.trim());
   };
 
@@ -60,12 +66,7 @@ export default function App() {
     );
   };
 
-  // useEffect(() => {
-  //   findByName();
-  // }, [contacts, setContacts]);
-
   const deleteContact = id => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     setContacts(state => {
       return state.filter(el => el.id !== id);
     });

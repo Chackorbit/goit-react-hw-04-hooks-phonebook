@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid';
 
 const ContactList = ({ findByName, deleteContact, contacts }) => {
   const fullList = findByName();
-  console.log(fullList);
 
   return (
     <div className={s.container}>
