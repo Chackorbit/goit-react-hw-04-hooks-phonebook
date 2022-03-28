@@ -79,11 +79,7 @@ export default function App() {
 
       <p className={s.title}>Contacts</p>
       <Filter filter={filterName} onSaveFind={onSaveFind} />
-      <ContactList
-        contacts={contacts}
-        findByName={findByName}
-        deleteContact={deleteContact}
-      />
+      <ContactList findByName={findByName} deleteContact={deleteContact} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import React from 'react';
 import ContactItem from '../ContactItem/ContactItem';
 import { nanoid } from 'nanoid';
 
-const ContactList = ({ findByName, deleteContact, contacts }) => {
+const ContactList = ({ findByName, deleteContact }) => {
   const fullList = findByName();
 
   return (
